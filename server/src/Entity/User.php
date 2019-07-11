@@ -6,8 +6,9 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
+ *
  */
 class User extends BaseUser
 {
@@ -22,5 +23,10 @@ class User extends BaseUser
     {
         parent::__construct();
         // your own logic
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 }
