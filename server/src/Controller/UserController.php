@@ -2,15 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Mappers\UserMapper;
 use App\Services\UserService;
-use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Utils\ApiResponse;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -41,13 +38,13 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Rest\Post("/user", name="user_register")
+     * @Rest\Post("/user", name="user_create")
      */
-    public function register(Request $request) : ?JsonResponse
+    public function create(Request $request) : ?JsonResponse
     {
         try{
             $user = $this->userService->create(UserMapper::fromRegister($request));
-            return ApiResponse::create($user,"Usuário criado com sucesso");
+            return ApiResponse::create($user->toArray(),"Usuário criado com sucesso");
         }catch (\Exception $exception){
             return ApiResponse::bad($exception->getMessage());
         }

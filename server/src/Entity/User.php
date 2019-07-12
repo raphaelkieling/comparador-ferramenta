@@ -29,4 +29,15 @@ class User extends BaseUser
     {
         return $this->id;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'username' => $this->getUsername(),
+            'email' => $this->getEmail(),
+            'enabled'=> $this->isEnabled(),
+            'last_login'=>$this->getLastLogin(),
+            'roles'=>$this->getRoles()
+        ];
+    }
 }

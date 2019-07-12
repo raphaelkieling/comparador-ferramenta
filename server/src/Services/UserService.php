@@ -40,10 +40,6 @@ class UserService
     }
 
     public function findAll(){
-        try{
-            return $this->userRepository->findAll();
-        }catch(\Exception $exception){
-            return null;
-        }
+        return $this->userRepository->findAll();
     }
 }

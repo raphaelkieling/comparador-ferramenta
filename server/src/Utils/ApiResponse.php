@@ -22,8 +22,8 @@ class ApiResponse {
         return new JsonResponse(ApiResponse::createResponse($data, $message), Response::HTTP_CREATED);
     }
 
-    public static function internalError($data, string $message){
-        return new JsonResponse(ApiResponse::createResponse($data, $message), Response::HTTP_INTERNAL_SERVER_ERROR);
+    public static function internalError(string $message){
+        return new JsonResponse(ApiResponse::createResponse(null, $message), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public static function bad(string $message){
