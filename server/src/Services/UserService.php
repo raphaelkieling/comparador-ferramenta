@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Entity\User;
@@ -36,11 +35,15 @@ class UserService
             return $user;
         }catch (\Exception $exception){
             $this->em->getConnection()->rollBack();
-            return $exception;
+            return null;
         }
     }
 
     public function findAll(){
-        return $this->userRepository->findAll();
+        try{
+            return $this->userRepository->findAll();
+        }catch(\Exception $exception){
+            return null;
+        }
     }
 }

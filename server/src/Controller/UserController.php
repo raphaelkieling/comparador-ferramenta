@@ -5,15 +5,16 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Mappers\UserMapper;
 use App\Services\UserService;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use App\Utils\ApiResponse;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 
 /**
  * Class UserController
@@ -23,10 +24,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     private $userService;
+    private $translator;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, TranslatorInterface $translator)
     {
         $this->userService = $userService;
+        $this->translator = $translator;
     }
 
     /**
@@ -34,7 +37,7 @@ class UserController extends AbstractController
      */
     public function index():JsonResponse
     {
-        return new JsonResponse(["params"=>$this->userService->findAll()]);
+        return ApiResponse::ok($this->userService->findAll(),"Sucesso ao pegar os usuários");
     }
 
     /**
@@ -44,9 +47,16 @@ class UserController extends AbstractController
     {
         try{
             $user = $this->userService->create(UserMapper::fromRegister($request));
-            return new JsonResponse(["params"=>$user],Response::HTTP_OK);
+            return ApiResponse::create($user,"Usuário criado com sucesso");
         }catch (\Exception $exception){
-            return new JsonResponse(["params"=>$exception->getMessage()]);
+            return ApiResponse::bad($exception->getMessage());
         }
+    }
+
+    /**
+     * @Rest\Put("/user",name="user_edit")
+     */
+    public function edit(Request $request): ?JsonResponse{
+        return ApiResponse::ok('','Changed');
     }
 }
