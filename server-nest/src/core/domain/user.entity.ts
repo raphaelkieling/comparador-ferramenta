@@ -9,14 +9,10 @@ import {
   IsInt,
   MaxLength,
 } from 'class-validator';
+import { BaseDomain } from './base';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  @IsOptional()
-  @IsInt()
-  id: number;
-
+export class User extends BaseDomain {
   @Column({ unique: true })
   @IsEmail()
   @IsString()

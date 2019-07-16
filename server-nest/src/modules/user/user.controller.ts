@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from './user.entity';
+import { User } from '../../core/domain/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ErrorsInterceptor } from 'src/core/interceptors/error.interceptor';
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptor';

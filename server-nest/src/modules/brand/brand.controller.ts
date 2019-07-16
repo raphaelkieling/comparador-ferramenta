@@ -13,7 +13,7 @@ import { BrandService } from './brand.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptor';
 import { ErrorsInterceptor } from 'src/core/interceptors/error.interceptor';
-import { Brand } from './brand.entity';
+import { Brand } from '../../core/domain/brand.entity';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('brand')
