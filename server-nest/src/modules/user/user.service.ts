@@ -35,16 +35,21 @@ export class UserService {
   async create(user: User): Promise<User> {
     user.password = this.generatePassword(user.password);
     const { password, ...result } = await this.userRepository.save(user);
-    return result;
+    return result as User;
   }
 
-  async update(id: number, user: User): Promise<boolean> {
+  async update(id: number, user: User): Promise<User | boolean> {
     if (user.password) {
       user.password = this.generatePassword(user.password);
     }
 
     const result = await this.userRepository.update(id, user);
-    return result.raw.changedRows >= 1;
+
+    if (result.raw.changedRows >= 1) {
+      return await this.userRepository.findOne(id);
+    }
+
+    return false;
   }
 
   async delete(id: number): Promise<boolean> {

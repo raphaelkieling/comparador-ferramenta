@@ -2,17 +2,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
+import * as config from 'config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || config.get<number>('application.port');
+
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
+
   app.enableCors();
   app.use(helmet());
+
   await app.listen(PORT).finally(() => {
     // tslint:disable-next-line: no-console
-    console.log(`Running on port ${PORT}`);
+    console.info(`Server started on port ${PORT}`);
+    // tslint:disable-next-line: no-console
+    console.info(`We are currently in ${config.util.getEnv('NODE_ENV')} mode.`);
   });
 }
 
