@@ -11,7 +11,12 @@
       "lang":"",
       "fields": [
         {
-          "label": "Field 2",
+          "label": [
+            {
+              "language":"pt",
+              "value":"Field 2"
+            }
+          ],
           "type": "string",
           "value": "Field 2"
         },
