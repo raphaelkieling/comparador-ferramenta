@@ -1,7 +1,7 @@
 import { IsNotEmpty, MaxLength } from "class-validator";
+import LanguageValue from "../types/LanguageValue";
 
-export default class CategoryDTO {
+export default class CategoryCreateDTO {
     @IsNotEmpty()
-    @MaxLength(150)
-    title: string;
+    title: LanguageValue;
 }
