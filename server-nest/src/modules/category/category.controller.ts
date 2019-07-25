@@ -12,7 +12,7 @@ import { LanguageService } from "../language/language.service";
 @UseInterceptors(new ErrorsInterceptor())
 @UseInterceptors(new ResponseInterceptor())
 export class CategoryController {
-    constructor(private service: CategoryService, private languageService: LanguageService) { }
+    constructor(private service: CategoryService) { }
 
     @Get()
     public find(): Promise<Category[]> {
@@ -26,11 +26,7 @@ export class CategoryController {
 
     @Post()
     public async create(@Body() data: CategoryCreateDTO) {
-        let a = await this.languageService.getIdByLanguageName('en');
-        console.log(data);
-        console.log(a);
-        // return this.service.create(data);
-        return Promise.resolve('ok')
+        return this.service.create(data);
     }
 
     @Put(':id')
