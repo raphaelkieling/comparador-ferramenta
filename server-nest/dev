@@ -1,0 +1,2 @@
+yarn run v1.17.3
+$ ts-node -r tsconfig-paths/register src/main.ts

@@ -9,7 +9,7 @@ export class LanguageService {
         @InjectRepository(Language) private readonly languageRepository: LanguageRepository
     ) { }
 
-    getByLanguageName(name) {
+    getByLanguageName(name): Promise<Language> {
         return this.languageRepository.findOne({
             where: {
                 name,
@@ -17,8 +17,8 @@ export class LanguageService {
         })
     }
 
-    async getIdByLanguageName(name):Promise<number | null> {
-        const finded =  await this.languageRepository.findOne({
+    async getIdByLanguageName(name): Promise<number | null> {
+        const finded = await this.languageRepository.findOne({
             where: {
                 name,
             },

@@ -20,6 +20,7 @@ import * as config from 'config';
       database: config.get<any>('database.database'),
       entities: config.get<any>('database.entities'),
       synchronize: config.get<any>('database.synchronize'),
+      logging: config.get<any>('database.logging'),
     }),
     UserModule,
     AuthModule,
@@ -30,4 +31,4 @@ import * as config from 'config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

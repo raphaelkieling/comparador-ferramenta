@@ -5,7 +5,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { UseGuards, Controller, UseInterceptors, Get, Post, Put, Delete, Param, Body } from "@nestjs/common";
 import { Category } from "src/core/domain/category.entity";
 import CategoryCreateDTO from "src/core/dto/category.dto";
-import { LanguageService } from "../language/language.service";
+import CategoryDTO from "src/core/dto/category.dto";
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('category')
@@ -15,23 +15,25 @@ export class CategoryController {
     constructor(private service: CategoryService) { }
 
     @Get()
-    public find(): Promise<Category[]> {
-        return this.service.findAll();
+    public find(): Promise<CategoryDTO[]> {
+        return this.service.findAll('en');
     }
 
     @Get(':id')
-    public findOne(@Param('id') id: number): Promise<Category> {
-        return this.service.findOne(id);
+    public findOne(@Param('id') id: number): Promise<CategoryDTO> {
+        return this.service.findOne(id, 'en');
     }
 
     @Post()
     public async create(@Body() data: CategoryCreateDTO) {
-        return this.service.create(data);
+        const created = await this.service.create(data, 'en');
+        const categoryFound = await this.service.findOne(created.id, 'en');
+        return categoryFound;
     }
 
     @Put(':id')
-    public update(@Param('id') id: number, @Body() data: Category): Promise<any> {
-        return this.service.update(id, data);
+    public update(@Param('id') id: number, @Body() data: CategoryDTO): Promise<any> {
+        return this.service.update(id, data, 'en');
     }
 
     @Delete(':id')

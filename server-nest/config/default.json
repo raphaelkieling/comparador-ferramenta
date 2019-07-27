@@ -3,11 +3,14 @@
     "type": "mysql",
     "host": "localhost",
     "port": 3306,
-    "username": "root",
-    "password": "",
+    "username": "comp",
+    "password": "comp",
     "database": "comparador",
-    "entities": ["src/**/*.entity{.ts,.js}"],
-    "synchronize": true
+    "entities": [
+      "src/**/*.entity{.ts,.js}"
+    ],
+    "synchronize": true,
+    "logging": true
   },
   "application": {
     "port": 3001

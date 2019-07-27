@@ -1,6 +1,6 @@
 import { BaseDomain } from './base';
 import { Category } from './category.entity';
-import { ManyToOne, Entity, Column } from 'typeorm';
+import { ManyToOne, Entity, Column, JoinColumn } from 'typeorm';
 import { Language } from './language.entity';
 import { MaxLength } from 'class-validator';
 
@@ -10,9 +10,17 @@ export class CategoryToLanguage extends BaseDomain {
   @MaxLength(255)
   public title: string;
 
-  @ManyToOne(type => Category, category => category.languages)
+  @Column()
+  categoryId: number;
+
+  @Column()
+  languageId: number;
+
+  @ManyToOne(type => Category, category => category.translates)
+  @JoinColumn({ name: 'categoryId' })
   public category: Category;
 
   @ManyToOne(type => Language)
+  @JoinColumn({ name: 'languageId' })
   public language: Language;
 }
