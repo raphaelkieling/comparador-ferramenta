@@ -3,6 +3,6 @@ import LanguageValue from "../types/LanguageValue";
 
 export default class CategoryDTO {
     @IsNotEmpty()
-    title: string;
+    title: LanguageValue;
     image: string;
 }

@@ -4,16 +4,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/core/domain/category.entity';
 import CategoryCreateDTO from 'src/core/dto/category.dto';
 import { Language } from 'src/core/domain/language.entity';
-import { LanguageRepository } from '../language/language.repository';
 import { LanguageService } from '../language/language.service';
 import { CategoryToLanguage } from 'src/core/domain/categoryToLanguage.entity';
 import { CategoryToLanguageRepository } from './categoryToLanguage.repository';
 import CategoryDTO from 'src/core/dto/category.dto';
+import { Constants } from '../constants';
+import { Image } from 'src/core/domain/image.entity';
+import { ImageRepository } from '../image/image.repository';
 
 @Injectable()
 export class CategoryService {
     constructor(
         @InjectRepository(Category) private readonly categoryRepository: CategoryRepository,
+        @InjectRepository(Image) private readonly imageRepository: ImageRepository,
         @InjectRepository(CategoryToLanguageRepository) private readonly categoryToLanguageRepository: CategoryToLanguageRepository,
         private readonly languageService: LanguageService) { }
 
@@ -32,17 +35,32 @@ export class CategoryService {
     }
 
     async create(data: CategoryCreateDTO, language: string): Promise<Category> {
-        const languageEntity: Language = await this.languageService.getByLanguageName(language);
-        const category = new Category();
+        const languageEntityEn: Language = await this.languageService.getByLanguageName(Constants.Language.EN);
+        const languageEntityPt: Language = await this.languageService.getByLanguageName(Constants.Language.PT);
 
+        const image = new Image();
+        image.base64 = data.image;
+        await this.imageRepository.save(image);
+
+        const category = new Category();
+        category.image = image;
         await this.categoryRepository.save(category);
 
-        const categoryToLanguage = new CategoryToLanguage();
+        const categoryToLanguageEn = new CategoryToLanguage({
+            title: data.title.en,
+            language: languageEntityEn,
+            category,
+        });
 
-        categoryToLanguage.title = data.title;
-        categoryToLanguage.language = languageEntity;
-        categoryToLanguage.category = category;
-        await this.categoryToLanguageRepository.save(categoryToLanguage);
+        await this.categoryToLanguageRepository.save(categoryToLanguageEn);
+
+        const categoryToLanguagePt = new CategoryToLanguage({
+            title: data.title.pt,
+            language: languageEntityPt,
+            category,
+        });
+
+        await this.categoryToLanguageRepository.save(categoryToLanguagePt);
 
         return category;
     }

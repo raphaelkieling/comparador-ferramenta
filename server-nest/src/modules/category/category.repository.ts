@@ -20,7 +20,7 @@ export class CategoryRepository extends Repository<Category> {
             .select([
                 'c.id as id',
                 'ct.title as title',
-                'img.url as image'
+                'img.base64 as image'
             ])
             .leftJoin('c.image', 'img')
             .leftJoin('c.translates', 'ct')

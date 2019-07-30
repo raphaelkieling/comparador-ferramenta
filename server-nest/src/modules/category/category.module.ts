@@ -6,9 +6,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LanguageRepository } from '../language/language.repository';
 import { LanguageService } from '../language/language.service';
 import { CategoryToLanguageRepository } from './categoryToLanguage.repository';
+import { ImageRepository } from '../image/image.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CategoryRepository, LanguageRepository, CategoryToLanguageRepository])],
+  imports: [TypeOrmModule.forFeature([
+    CategoryRepository,
+    LanguageRepository,
+    CategoryToLanguageRepository,
+    ImageRepository,
+  ])],
   controllers: [CategoryController],
   providers: [CategoryService, LanguageService],
 })

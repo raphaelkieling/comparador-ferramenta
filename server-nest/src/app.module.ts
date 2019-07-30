@@ -7,6 +7,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BrandModule } from './modules/brand/brand.module';
 import { CategoryModule } from './modules/category/category.module';
 import { LanguageModule } from './modules/language/language.module';
+import { ImageModule } from './modules/image/image.module';
+import { GroupModule } from './modules/group/group.module';
 import * as config from 'config';
 
 @Module({
@@ -27,6 +29,8 @@ import * as config from 'config';
     BrandModule,
     CategoryModule,
     LanguageModule,
+    ImageModule,
+    GroupModule,
   ],
   controllers: [AppController],
   providers: [AppService],

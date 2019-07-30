@@ -23,4 +23,15 @@ export class CategoryToLanguage extends BaseDomain {
   @ManyToOne(type => Language)
   @JoinColumn({ name: 'languageId' })
   public language: Language;
+
+  constructor({
+    title = '',
+    language = null,
+    category = null,
+  } = {}) {
+    super();
+    this.title = title;
+    this.language = language;
+    this.category = category;
+  }
 }
