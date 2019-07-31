@@ -1,5 +1,6 @@
-import GroupDTO from "./group.dto";
+import GroupDTO from './group.dto';
 
 export default class FormDTO {
-    groups: GroupDTO[];
+  order: number;
+  groups: GroupDTO[];
 }
