@@ -20,70 +20,93 @@
           <v-layout>
             <v-flex>
               <h1>Formulary</h1>
-              <form @submit.prevent="handlerSubmitGrupo">
-                <v-text-field name="group" label="Grupo" id="group" v-model="formGroup.description"></v-text-field>
-                <v-btn type="submit" small color="primary" class="ma-0">Create group</v-btn>
-              </form>
 
               <div v-if="firstForm.groups.length === 0">
                 <p class="text-sm-center">No groups found</p>
               </div>
 
               <div v-else>
-                <v-card class="mt-2" v-for="group in firstForm.groups" :key="group.id">
-                  <v-card-text>
-                    <v-text-field
-                      v-model="group.description"
-                      name="description-group"
-                      label="Description"
-                      id="description-group"
-                    ></v-text-field>
+                <draggable v-model="firstForm.groups">
+                  <v-card class="mt-2" v-for="group in firstForm.groups" :key="group.id">
+                    <v-card-text>
+                      <v-text-field
+                        v-model="group.description"
+                        name="description-group"
+                        label="Description"
+                        id="description-group"
+                      ></v-text-field>
 
-                    <div v-if="group.fields.length === 0">
-                      <p class="text-sm-center">No fields found</p>
-                    </div>
-                    <div v-else>
-                      <div v-for="field in group.fields" :key="field.id">
-                        <v-layout>
-                          <v-flex pr-1 md6>
-                            <v-text-field
-                              v-model="field.description"
-                              name="name"
-                              label="Label"
-                              id="id"
-                            ></v-text-field>
-                          </v-flex>
-
-                          <v-flex pl-1 md6>
-                            <v-select
-                              :items="optionsTypeField"
-                              v-model="field.type"
-                              label="Type field"
-                              item-text="description"
-                              item-value="id"
-                            ></v-select>
-                          </v-flex>
-                          <v-flex pl-1 md1>
-                            <v-btn text icon @click="handlerRemoveField(group, field)">
-                              <v-icon>close</v-icon>
-                            </v-btn>
-                          </v-flex>
-                        </v-layout>
+                      <div v-if="group.fields.length === 0">
+                        <p class="text-sm-center">No fields found</p>
                       </div>
-                    </div>
-                  </v-card-text>
+                      <div v-else>
+                        <draggable v-model="group.fields">
+                          <div v-for="field in group.fields" :key="field.id">
+                            <v-layout>
+                              <v-flex pl-1 md1>
+                                <v-btn text icon>
+                                  <v-icon>menu</v-icon>
+                                </v-btn>
+                              </v-flex>
+                              <v-flex pr-1 md6>
+                                <v-text-field
+                                  v-model="field.description"
+                                  name="name"
+                                  label="Label"
+                                  id="id"
+                                ></v-text-field>
+                              </v-flex>
 
-                  <v-card-actions>
-                    <v-btn depressed small color="primary" @click="handlerAddField(group)">Add field</v-btn>
-                    <v-btn
-                      depressed
-                      small
-                      color="error"
-                      @click="handlerRemoveGroup(group)"
-                    >Remove group</v-btn>
-                  </v-card-actions>
-                </v-card>
+                              <v-flex pl-1 md6>
+                                <v-select
+                                  :items="optionsTypeField"
+                                  v-model="field.type"
+                                  label="Type field"
+                                  item-text="description"
+                                  item-value="id"
+                                ></v-select>
+                              </v-flex>
+                              <v-flex pl-1 md1>
+                                <v-btn text icon @click="handlerRemoveField(group, field)">
+                                  <v-icon>close</v-icon>
+                                </v-btn>
+                              </v-flex>
+                            </v-layout>
+                          </div>
+                        </draggable>
+                      </div>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-layout row>
+                        <v-btn text icon>
+                          <v-icon>swap_vert</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          depressed
+                          outline
+                          small
+                          color="primary"
+                          @click="handlerAddField(group)"
+                        >Add field</v-btn>
+                        <v-btn
+                          outline
+                          depressed
+                          small
+                          color="error"
+                          @click="handlerRemoveGroup(group)"
+                        >Remove group</v-btn>
+                      </v-layout>
+                    </v-card-actions>
+                  </v-card>
+                </draggable>
               </div>
+
+              <form @submit.prevent="handlerSubmitGrupo">
+                <v-text-field name="group" label="Grupo" id="group" v-model="formGroup.description"></v-text-field>
+                <v-btn type="submit" small color="primary" class="ma-0">Create group</v-btn>
+              </form>
             </v-flex>
           </v-layout>
         </form>
@@ -95,10 +118,11 @@
 <script>
 import vueDropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+import draggable from 'vuedraggable'
 
 export default {
   layout: 'admin',
-  components: { vueDropzone },
+  components: { vueDropzone, draggable },
   data() {
     return {
       formGroup: {

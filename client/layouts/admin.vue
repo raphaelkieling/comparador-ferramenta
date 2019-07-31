@@ -29,6 +29,7 @@
       fixed
       app
       dark
+      class="z-50"
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
@@ -49,22 +50,22 @@ export default {
       items: [
         {
           icon: 'home',
-          title: 'Principal',
+          title: 'Home',
           to: '/admin'
         },
         {
           icon: 'widgets',
-          title: 'Categorias',
+          title: 'Category',
           to: '/admin/category'
         },
         {
           icon: 'label',
-          title: 'Tipo de ferramentas',
+          title: 'Type of tools',
           to: '/admin/inspire'
         },
         {
           icon: 'gavel',
-          title: 'Ferramentas',
+          title: 'Tools',
           to: '/admin/inspire'
         }
       ],
