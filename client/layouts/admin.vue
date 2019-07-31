@@ -28,6 +28,7 @@
       :clipped-left="true"
       fixed
       app
+      dark
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
