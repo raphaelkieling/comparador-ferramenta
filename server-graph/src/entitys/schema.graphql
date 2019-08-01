@@ -1,5 +1,0 @@
-# import User from "./user/entity.graphql"
-
-type Query {
-  users: [User]
-}

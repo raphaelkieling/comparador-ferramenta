@@ -1,0 +1,10 @@
+# import User from "./user/entity.graphql"
+
+type Query {
+  users: [User]
+}
+
+type Mutation {
+  auth(user: UserAuthInput!): AuthLogin!
+  addUser(user: UserCreateInput!): User
+}

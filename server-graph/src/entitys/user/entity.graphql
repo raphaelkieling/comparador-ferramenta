@@ -1,5 +1,0 @@
-type User {
-    email: String
-    password: String
-    isAdmin: Boolean
-}

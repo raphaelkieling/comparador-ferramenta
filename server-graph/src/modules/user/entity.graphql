@@ -1,0 +1,20 @@
+type User {
+  id: ID!
+  email: String!
+  isAdmin: Boolean
+}
+
+input UserCreateInput {
+  email: String!
+  password: String!
+}
+
+input UserAuthInput {
+  email: String!
+  password: String!
+}
+
+type AuthLogin {
+  user: User!,
+  token: String
+}
