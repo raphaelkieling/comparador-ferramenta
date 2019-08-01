@@ -26,20 +26,18 @@ export class CategoryController {
 
   @Get()
   public find(): Promise<CategoryDTO[]> {
-    return this.service.findAll('en');
+    return this.service.findAll();
   }
 
   @Get(':id')
   public findOne(@Param('id') id: number): Promise<CategoryDTO> {
-    return this.service.findOne(id, 'en');
+    return this.service.findOne(id);
   }
 
   @Post()
   public async create(@Body() data: CategoryCreateDTO) {
-    console.log(data);
-
-    const created = await this.service.create(data, 'en');
-    const categoryFound = await this.service.findOne(created.id, 'en');
+    const created = await this.service.create(data);
+    const categoryFound = await this.service.findOne(created.id);
     return categoryFound;
   }
 
@@ -48,7 +46,7 @@ export class CategoryController {
     @Param('id') id: number,
     @Body() data: CategoryDTO,
   ): Promise<any> {
-    return this.service.update(id, data, 'en');
+    return this.service.update(id, data);
   }
 
   @Delete(':id')

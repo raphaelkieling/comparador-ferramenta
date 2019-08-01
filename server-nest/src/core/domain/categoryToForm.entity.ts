@@ -1,8 +1,6 @@
 import { BaseDomain } from './base';
 import { Category } from './category.entity';
-import { ManyToOne, Entity, Column } from 'typeorm';
-import { Language } from './language.entity';
-import { MaxLength } from 'class-validator';
+import { ManyToOne, Entity, JoinColumn } from 'typeorm';
 import { Form } from './form.entity';
 
 @Entity()

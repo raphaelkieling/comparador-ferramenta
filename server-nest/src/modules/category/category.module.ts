@@ -3,19 +3,14 @@ import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
 import { CategoryRepository } from './category.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LanguageRepository } from '../language/language.repository';
-import { LanguageService } from '../language/language.service';
-import { CategoryToLanguageRepository } from './categoryToLanguage.repository';
 import { ImageRepository } from '../image/image.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     CategoryRepository,
-    LanguageRepository,
-    CategoryToLanguageRepository,
     ImageRepository,
   ])],
   controllers: [CategoryController],
-  providers: [CategoryService, LanguageService],
+  providers: [CategoryService],
 })
 export class CategoryModule { }

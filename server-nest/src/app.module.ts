@@ -6,7 +6,6 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BrandModule } from './modules/brand/brand.module';
 import { CategoryModule } from './modules/category/category.module';
-import { LanguageModule } from './modules/language/language.module';
 import { ImageModule } from './modules/image/image.module';
 import { GroupModule } from './modules/group/group.module';
 import * as config from 'config';
@@ -28,7 +27,6 @@ import * as config from 'config';
     AuthModule,
     BrandModule,
     CategoryModule,
-    LanguageModule,
     ImageModule,
     GroupModule,
   ],

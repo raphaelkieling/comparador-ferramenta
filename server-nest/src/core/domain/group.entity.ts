@@ -5,15 +5,18 @@ import { Form } from './form.entity';
 
 @Entity()
 export class Group extends BaseDomain {
-  @Column('int')
-  order: number;
+    @Column('int')
+    order: number;
 
-  @OneToMany(type => Field, field => field.groups)
-  fields: Field[];
+    @OneToMany(type => Field, field => field.groups, { cascade: true })
+    fields: Field[];
 
-  @ManyToOne(type => Group, group => group.form)
-  form: Form;
+    @ManyToOne(type => Group, group => group.form)
+    form: Form;
 
-  @Column()
-  description: string;
+    @Column()
+    descriptionEN: string;
+
+    @Column()
+    descriptionPT: string;
 }

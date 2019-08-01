@@ -4,25 +4,28 @@ import { Group } from './group.entity';
 import { FieldOption } from './fieldOption.entity';
 
 enum FieldType {
-  SELECT,
-  TEXT,
-  NUMBER,
+    SELECT,
+    TEXT,
+    NUMBER,
 }
 
 @Entity()
 export class Field extends BaseDomain {
-  @Column('int')
-  type: FieldType;
+    @Column('int')
+    type: FieldType;
 
-  @OneToMany(type => FieldOption, fieldOption => fieldOption)
-  options: [];
+    @OneToMany(type => FieldOption, fieldOption => fieldOption, { cascade: true })
+    options: [];
 
-  @Column()
-  label: string;
+    @Column()
+    descriptionEN: string;
 
-  @OneToMany(type => Group, group => group.fields)
-  groups: Group[];
+    @Column()
+    descriptionPT: string;
 
-  @Column('int')
-  order: number;
+    @OneToMany(type => Group, group => group.fields)
+    groups: Group[];
+
+    @Column('int')
+    order: number;
 }

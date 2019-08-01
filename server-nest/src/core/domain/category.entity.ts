@@ -1,26 +1,23 @@
 import { BaseDomain } from './base';
-import { MaxLength, IsNotEmpty } from 'class-validator';
 import { Column, OneToMany, Entity, OneToOne, JoinColumn } from 'typeorm';
-import { CategoryToLanguage } from './categoryToLanguage.entity';
 import { Form } from './form.entity';
 import { CategoryToForm } from './categoryToForm.entity';
 import { Image } from './image.entity';
 
 @Entity()
 export class Category extends BaseDomain {
-  @OneToOne(type => Image)
-  @JoinColumn()
-  image: Image;
+    @Column()
+    descriptionEN: string;
 
-  @OneToMany(
-    type => CategoryToLanguage,
-    categoryToLanguage => categoryToLanguage.category,
-  )
-  translates: CategoryToLanguage[];
+    @Column()
+    descriptionPT: string;
 
-  @OneToMany(
-    type => CategoryToForm,
-    categoryToForm => categoryToForm.form,
-  )
-  forms: Form[];
+    @OneToOne(type => Image, { cascade: true, onDelete: 'CASCADE' })
+    @JoinColumn()
+    image: Image;
+
+    @OneToMany(type => CategoryToForm, categoryToForm => categoryToForm.category, {
+        cascade: true,
+    })
+    forms: Form[];
 }

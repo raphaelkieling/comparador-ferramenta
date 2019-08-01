@@ -1,10 +1,9 @@
-import { IsNotEmpty, MaxLength } from 'class-validator';
-import LanguageValue from '../types/LanguageValue';
-import FormDTO from './form.dto';
+import { Image } from '../domain/image.entity';
+import { Form } from '../domain/form.entity';
 
 export default class CategoryDTO {
-  @IsNotEmpty()
-  title: LanguageValue;
-  image: string;
-  forms: FormDTO[];
+    descriptionEN: string;
+    descriptionPT: string;
+    image: Image;
+    forms: Form[];
 }
