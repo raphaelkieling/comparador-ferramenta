@@ -56,7 +56,7 @@ export default {
         {
           icon: 'widgets',
           title: 'Category',
-          to: '/admin/category'
+          to: '/admin/category/list'
         },
         {
           icon: 'label',

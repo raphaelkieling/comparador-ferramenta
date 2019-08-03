@@ -1,5 +1,5 @@
 import { BaseDomain } from './base';
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Field } from './field.entity';
 import { Form } from './form.entity';
 
@@ -8,10 +8,14 @@ export class Group extends BaseDomain {
     @Column('int')
     order: number;
 
-    @OneToMany(type => Field, field => field.groups, { cascade: true })
+    @OneToMany(type => Field, field => field.group, { cascade: true })
     fields: Field[];
 
-    @ManyToOne(type => Group, group => group.form)
+    @Column({ name: "formId" })
+    formId: number;
+
+    @ManyToOne(type => Form, form => form.groups)
+    @JoinColumn({ name: "formId" })
     form: Form;
 
     @Column()

@@ -3,10 +3,6 @@ import { CategoryRepository } from './category.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/core/domain/category.entity';
 import CategoryCreateDTO from 'src/core/dto/category.dto';
-import CategoryDTO from 'src/core/dto/category.dto';
-import { Constants } from '../constants';
-import { Image } from 'src/core/domain/image.entity';
-import { ImageRepository } from '../image/image.repository';
 
 @Injectable()
 export class CategoryService {
@@ -15,19 +11,19 @@ export class CategoryService {
         private readonly categoryRepository: CategoryRepository,
     ) {}
 
-    findAll(): Promise<CategoryDTO[]> {
-        return this.categoryRepository.findAllByLanguage();
+    findAll(): Promise<Category[]> {
+        return this.categoryRepository.getAll();
     }
 
-    findOne(id: number): Promise<CategoryDTO> {
-        return this.categoryRepository.findOneByLanguage(id);
+    findOne(id: number): Promise<Category> {
+        return this.categoryRepository.getOne(id);
     }
 
     async create(data: CategoryCreateDTO): Promise<Category> {
         return this.categoryRepository.save(data);
     }
 
-    async update(id: number, data: CategoryDTO): Promise<boolean> {
+    async update(id: number, data: Category): Promise<boolean> {
         const result = await this.categoryRepository.save(data);
         return result !== undefined;
     }

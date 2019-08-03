@@ -2,10 +2,10 @@
   <v-layout>
     <v-flex md12>
       <v-card class="pa-3">
-        <form>
+        <form @submit.prevent="handlerSubmit">
           <v-layout>
             <v-flex sm12 pr-1>
-              <v-text-field name="title" label="Title"></v-text-field>
+              <v-text-field v-model="form.descriptionEN" name="title" label="Title"></v-text-field>
             </v-flex>
           </v-layout>
 
@@ -21,7 +21,7 @@
             <v-flex>
               <h1>Formulary</h1>
 
-              <div v-if="firstForm.groups.length === 0">
+              <div v-if="hasGroups">
                 <p class="text-sm-center">No groups found</p>
               </div>
 
@@ -30,7 +30,7 @@
                   <v-card class="mt-2" v-for="group in firstForm.groups" :key="group.id">
                     <v-card-text>
                       <v-text-field
-                        v-model="group.description"
+                        v-model="group.descriptionEN"
                         name="description-group"
                         label="Description"
                         id="description-group"
@@ -50,7 +50,7 @@
                               </v-flex>
                               <v-flex pr-1 md6>
                                 <v-text-field
-                                  v-model="field.description"
+                                  v-model="field.descriptionEN"
                                   name="name"
                                   label="Label"
                                   id="id"
@@ -109,6 +109,9 @@
               </form>
             </v-flex>
           </v-layout>
+          <div style="text-align: right;">
+            <v-btn type="submit" color="primary">Save</v-btn>
+          </div>
         </form>
       </v-card>
     </v-flex>
@@ -119,46 +122,39 @@
 import vueDropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import draggable from 'vuedraggable'
+import { mapActions } from 'vuex'
 
 export default {
   layout: 'admin',
   components: { vueDropzone, draggable },
   data() {
     return {
+      id: null,
       formGroup: {
         description: ''
       },
       form: {
-        title: {},
+        descriptionEN: '',
+        descriptionPT: '',
         forms: [
           {
-            order: 0,
-            groups: [
-              {
-                description: '[group] hello world',
-                fields: [
-                  {
-                    description: '[field] hello field',
-                    type: 'text'
-                  }
-                ]
-              }
-            ]
+            order: 1,
+            groups: []
           }
         ]
       },
       optionsTypeField: [
         {
-          id: 'Select',
-          description: 'select'
+          id: 3,
+          description: 'Select'
         },
         {
-          id: 'Text',
-          description: 'text'
+          id: 1,
+          description: 'Text'
         },
         {
-          id: 'Option',
-          description: 'option'
+          id: 2,
+          description: 'Number'
         }
       ],
       dropzoneOptions: {
@@ -170,24 +166,43 @@ export default {
       }
     }
   },
+  beforeMount() {
+    this.id = this.$route.params.id
+  },
+  mounted() {
+    if (this.id)
+      this.getOne(this.id).then(({ data }) => {
+        this.form = data
+      })
+  },
   computed: {
     firstForm() {
       return this.form.forms[0]
+    },
+    hasGroups() {
+      if (!this.firstForm) return false
+
+      return this.firstForm.groups.length === 0
     }
   },
   methods: {
+    ...mapActions('category', ['create', 'getOne']),
     handlerSubmitGrupo() {
       this.firstForm.groups.push({
-        description: this.formGroup.description,
-        fields: []
+        descriptionEN: this.formGroup.description,
+        descriptionPT: '',
+        fields: [],
+        order: 1
       })
 
       this.formGroup.description = ''
     },
     handlerAddField(group) {
       group.fields.push({
-        description: '',
-        type: 'text'
+        descriptionEN: '',
+        descriptionPT: '',
+        type: 'text',
+        order: 1
       })
     },
     handlerRemoveGroup(paramGroup) {
@@ -199,6 +214,9 @@ export default {
       group.fields = group.fields.filter(field => {
         return paramField !== field
       })
+    },
+    handlerSubmit() {
+      this.create(this.form)
     }
   }
 }

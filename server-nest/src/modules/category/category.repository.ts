@@ -1,21 +1,27 @@
 import { Category } from 'src/core/domain/category.entity';
 import { EntityRepository, Repository } from 'typeorm';
-import CategoryDTO from 'src/core/dto/category.dto';
 
 @EntityRepository(Category)
 export class CategoryRepository extends Repository<Category> {
-    findAllByLanguage(): Promise<CategoryDTO[]> {
+    getAll(): Promise<Category[]> {
         return this.find({
             relations: ['image'],
         });
     }
 
-    findOneByLanguage(id: number): Promise<CategoryDTO> {
+    getOne(id: number): Promise<Category> {
         return this.findOne({
             where: {
                 id,
             },
-            relations: ['image', 'forms'],
+            relations: ['image', 'forms', 'forms.groups', 'forms.groups.fields'],
         });
+        // return this.createQueryBuilder('c')
+        //     .innerJoinAndSelect('c.image', 'images')
+        //     .innerJoinAndSelect('c.forms', 'forms')
+        //     .innerJoinAndSelect('forms.groups', 'groups')
+        //     .innerJoinAndSelect('groups.fields', 'fields')
+        //     .where('c.id = :ci', { ci: id })
+        //     .getOne();
     }
 }

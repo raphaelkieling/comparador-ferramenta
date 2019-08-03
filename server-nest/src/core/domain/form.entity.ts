@@ -1,5 +1,5 @@
 import { BaseDomain } from './base';
-import { Entity, OneToMany, Column } from 'typeorm';
+import { Entity, OneToMany, Column, JoinColumn } from 'typeorm';
 import { Group } from './group.entity';
 
 @Entity()

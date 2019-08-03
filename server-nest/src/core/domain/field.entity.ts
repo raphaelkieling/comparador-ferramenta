@@ -1,12 +1,12 @@
 import { BaseDomain } from './base';
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { Group } from './group.entity';
 import { FieldOption } from './fieldOption.entity';
 
 enum FieldType {
-    SELECT,
     TEXT,
     NUMBER,
+    SELECT,
 }
 
 @Entity()
@@ -14,8 +14,8 @@ export class Field extends BaseDomain {
     @Column('int')
     type: FieldType;
 
-    @OneToMany(type => FieldOption, fieldOption => fieldOption, { cascade: true })
-    options: [];
+    @OneToMany(type => FieldOption, fieldOption => fieldOption.field, { cascade: true })
+    options: FieldOption[];
 
     @Column()
     descriptionEN: string;
@@ -23,8 +23,12 @@ export class Field extends BaseDomain {
     @Column()
     descriptionPT: string;
 
-    @OneToMany(type => Group, group => group.fields)
-    groups: Group[];
+    @Column({ name: "groupId" })
+    groupId: number;
+
+    @ManyToOne(type => Group, group => group.fields)
+    @JoinColumn({ name: "groupId" })
+    group: Group;
 
     @Column('int')
     order: number;

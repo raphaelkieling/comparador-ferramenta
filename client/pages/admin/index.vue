@@ -3,9 +3,10 @@
     <v-flex xs12 sm8 md6>
       <div class="text-xs-center">
         <logo />
-        <vuetify-logo />
       </div>
-      <v-card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis, nesciunt. Placeat, optio atque nam, aspernatur incidunt labore porro animi, eligendi velit corrupti error nihil laboriosam odio quis neque harum accusamus.</v-card>
+      <v-card>
+        <v-card-text>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis, nesciunt. Placeat, optio atque nam, aspernatur incidunt labore porro animi, eligendi velit corrupti error nihil laboriosam odio quis neque harum accusamus.</v-card-text>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>

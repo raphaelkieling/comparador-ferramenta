@@ -1,7 +1,6 @@
 import { BaseDomain } from './base';
-import { Column, OneToMany, Entity, OneToOne, JoinColumn } from 'typeorm';
+import { Column, OneToMany, Entity, OneToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Form } from './form.entity';
-import { CategoryToForm } from './categoryToForm.entity';
 import { Image } from './image.entity';
 
 @Entity()
@@ -16,8 +15,19 @@ export class Category extends BaseDomain {
     @JoinColumn()
     image: Image;
 
-    @OneToMany(type => CategoryToForm, categoryToForm => categoryToForm.category, {
-        cascade: true,
+
+    @ManyToMany(type => Form, { cascade: true })
+    @JoinTable({
+        name: 'category_to_form',
+        joinColumn: {
+            name: 'formId',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'categoryId',
+            referencedColumnName: 'id'
+        }
     })
     forms: Form[];
+
 }
