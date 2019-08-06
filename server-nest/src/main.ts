@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import * as helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import * as config from 'config';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,8 @@ async function bootstrap() {
 
   app.enableCors();
   app.use(helmet());
+  app.use(bodyParser.json({limit: '50mb'}));
+  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
   await app.listen(PORT).finally(() => {
     // tslint:disable-next-line: no-console

@@ -5,7 +5,10 @@
         <form @submit.prevent="handlerSubmit">
           <v-layout>
             <v-flex sm12 pr-1>
-              <v-text-field v-model="form.descriptionEN" name="title" label="Title"></v-text-field>
+              <v-text-field v-model="form.descriptionEN" name="title" label="Title (english)"></v-text-field>
+            </v-flex>
+            <v-flex sm12 pl-1>
+              <v-text-field v-model="form.descriptionPT" name="title" label="Title (portuguese)"></v-text-field>
             </v-flex>
           </v-layout>
 
@@ -29,12 +32,24 @@
                 <draggable v-model="firstForm.groups">
                   <v-card class="mt-2" v-for="group in firstForm.groups" :key="group.id">
                     <v-card-text>
-                      <v-text-field
-                        v-model="group.descriptionEN"
-                        name="description-group"
-                        label="Description"
-                        id="description-group"
-                      ></v-text-field>
+                      <v-layout>
+                        <v-flex pr-1 md6>
+                          <v-text-field
+                            v-model="group.descriptionEN"
+                            name="description-group"
+                            label="Description (english)"
+                            id="description-group"
+                          ></v-text-field>
+                        </v-flex>
+                        <v-flex pl-1 md6>
+                          <v-text-field
+                            v-model="group.descriptionPT"
+                            name="description-group"
+                            label="Description (portuguese)"
+                            id="description-group"
+                          ></v-text-field>
+                        </v-flex>
+                      </v-layout>
 
                       <div v-if="group.fields.length === 0">
                         <p class="text-sm-center">No fields found</p>
@@ -48,16 +63,25 @@
                                   <v-icon>menu</v-icon>
                                 </v-btn>
                               </v-flex>
-                              <v-flex pr-1 md6>
+                              <v-flex pr-1 md4>
                                 <v-text-field
                                   v-model="field.descriptionEN"
                                   name="name"
-                                  label="Label"
+                                  label="Label (english)"
                                   id="id"
                                 ></v-text-field>
                               </v-flex>
 
-                              <v-flex pl-1 md6>
+                              <v-flex pr-1 md4>
+                                <v-text-field
+                                  v-model="field.descriptionPT"
+                                  name="name"
+                                  label="Label (portuguese)"
+                                  id="id"
+                                ></v-text-field>
+                              </v-flex>
+
+                              <v-flex pl-1 md4>
                                 <v-select
                                   :items="optionsTypeField"
                                   v-model="field.type"
@@ -103,8 +127,25 @@
                 </draggable>
               </div>
 
-              <form @submit.prevent="handlerSubmitGrupo">
-                <v-text-field name="group" label="Grupo" id="group" v-model="formGroup.description"></v-text-field>
+              <form @submit.prevent="handlerSubmitGroup">
+                <v-layout>
+                  <v-flex pr-1 md6>
+                    <v-text-field
+                      name="group-en"
+                      label="Group (english)"
+                      id="group-en"
+                      v-model="formGroup.descriptionEN"
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex pl-1 md6>
+                    <v-text-field
+                      name="group-pt"
+                      label="Group (portuguese)"
+                      id="group-pt"
+                      v-model="formGroup.descriptionPT"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
                 <v-btn type="submit" small color="primary" class="ma-0">Create group</v-btn>
               </form>
             </v-flex>
@@ -123,6 +164,11 @@ import vueDropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import draggable from 'vuedraggable'
 import { mapActions } from 'vuex'
+import { Category } from '~/domain/category'
+import { Field } from '~/domain/field'
+import { Form } from '~/domain/form'
+import { Image } from '~/domain/image'
+import { Group } from '~/domain/group'
 
 export default {
   layout: 'admin',
@@ -131,23 +177,13 @@ export default {
     return {
       id: null,
       formGroup: {
-        description: ''
+        descriptionEN: '',
+        descriptionPT: ''
       },
       form: {
-        descriptionEN: '',
-        descriptionPT: '',
-        forms: [
-          {
-            order: 1,
-            groups: []
-          }
-        ]
+        forms: []
       },
       optionsTypeField: [
-        {
-          id: 3,
-          description: 'Select'
-        },
         {
           id: 1,
           description: 'Text'
@@ -155,10 +191,14 @@ export default {
         {
           id: 2,
           description: 'Number'
+        },
+        {
+          id: 3,
+          description: 'Select'
         }
       ],
       dropzoneOptions: {
-        url: 'https://httpbin.org',
+        url: process.env.baseUrl,
         thumbnailWidth: 200,
         addRemoveLinks: true,
         autoProcessQueue: false,
@@ -168,10 +208,12 @@ export default {
   },
   beforeMount() {
     this.id = this.$route.params.id
+    this.form.forms = [new Form()]
   },
   mounted() {
     if (this.id)
       this.getOne(this.id).then(({ data }) => {
+          console.log(data)
         this.form = data
       })
   },
@@ -181,29 +223,25 @@ export default {
     },
     hasGroups() {
       if (!this.firstForm) return false
-
       return this.firstForm.groups.length === 0
     }
   },
   methods: {
     ...mapActions('category', ['create', 'getOne']),
-    handlerSubmitGrupo() {
-      this.firstForm.groups.push({
-        descriptionEN: this.formGroup.description,
-        descriptionPT: '',
-        fields: [],
-        order: 1
-      })
+    handlerSubmitGroup() {
+      this.firstForm.groups.push(
+        new Group({
+          descriptionEN: this.formGroup.descriptionEN,
+          descriptionPT: this.formGroup.descriptionPT
+        })
+      )
 
-      this.formGroup.description = ''
+      this.formGroup.descriptionEN = ''
+      this.formGroup.descriptionPT = ''
+
     },
     handlerAddField(group) {
-      group.fields.push({
-        descriptionEN: '',
-        descriptionPT: '',
-        type: 'text',
-        order: 1
-      })
+      group.fields.push(new Field())
     },
     handlerRemoveGroup(paramGroup) {
       this.firstForm.groups = this.firstForm.groups.filter(group => {
@@ -216,7 +254,17 @@ export default {
       })
     },
     handlerSubmit() {
-      this.create(this.form)
+      const [photo] = this.$refs.myVueDropzone.getAcceptedFiles()
+
+      if (!photo) return
+
+      this.form.image = new Image({
+        base64: photo.dataURL
+      })
+
+      this.create(this.form).then(({ data }) => {
+        console.table(data)
+      })
     }
   }
 }
