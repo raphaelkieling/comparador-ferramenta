@@ -5,14 +5,19 @@ import { CategoryService } from './category.service';
 import { CategorySaveComponent } from './category-save/category-save.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { RouterModule } from '@angular/router';
-
-
-
+import { MaterialModule } from 'src/app/shared/material.module';
+import { FlexModule } from '@angular/flex-layout';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 @NgModule({
   declarations: [CategoryComponent, CategorySaveComponent, CategoryListComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    MaterialModule,
+    FlexModule,
+    NgxDropzoneModule,
+    KeyboardShortcutsModule
   ],
   providers: [
     CategoryService

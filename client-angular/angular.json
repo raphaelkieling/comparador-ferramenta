@@ -15,8 +15,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./webpack.config.js"
+            },
             "outputPath": "dist/client-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -28,7 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -66,13 +69,11 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "client-angular:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "client-angular:build:production"
+            "browserTarget": "client-angular:build",
+            "customWebpackConfig": {
+              "path": "./webpack.config.js"
             }
           }
         },

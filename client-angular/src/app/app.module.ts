@@ -9,11 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginModule } from './screens/login/login.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Interceptor } from './shared/interceptor/interceptor.module';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,9 +21,10 @@ import { Interceptor } from './shared/interceptor/interceptor.module';
     AdminModule,
     LoginModule,
     HttpClientModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    KeyboardShortcutsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
