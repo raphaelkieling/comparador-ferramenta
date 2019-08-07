@@ -2,37 +2,19 @@
 
 <mat-card>
   <div fxLayout="column">
-    <div
-      fxLayout="row"
-      fxLayout.xs="column"
-      fxLayoutAlign="space-between"
-      fxFlexFill
-      fxLayoutGap="10px"
-    >
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
       <mat-form-field fxFlex="50" fxFlex.xs="100">
-        <input
-          formControlName="descriptionEN"
-          matInput
-          placeholder="Title (english)"
-        />
+        <input matInput [(ngModel)]="data.descriptionEN" placeholder="Title (english)" />
       </mat-form-field>
 
       <mat-form-field fxFlex="50" fxFlex.xs="100">
-        <input
-          formControlName="descriptionPT"
-          matInput
-          placeholder="Title (portuguese)"
-        />
+        <input matInput [(ngModel)]="data.descriptionPT" placeholder="Title (portuguese)" />
       </mat-form-field>
     </div>
 
     <div>
-      <ngx-dropzone
-        [showPreviews]="true"
-        [multiple]="false"
-        [label]="'Adicione uma imagem para categoria'"
-        [accept]="'image/png,image/jpeg'"
-      ></ngx-dropzone>
+      <ngx-dropzone [showPreviews]="true" [multiple]="false" [label]="'Adicione uma imagem para categoria'"
+        [accept]="'image/png,image/jpeg'"></ngx-dropzone>
 
       <div fxLayout="row" fxLayoutAlign="end" class="mt-3">
         <button mat-flat-button color="accent" small>Clear</button>
@@ -41,39 +23,103 @@
   </div>
 </mat-card>
 
-<div class="my-3" fxLayout="row" fxLayoutAlign="space-between">
+<div class="my-3">
   <span class="text-xl font-bold text-gray-800">Groups</span>
-  <button mat-flat-button color="primary" small (click)="addGroup">Add Group</button>
 </div>
 
-<mat-card *ngFor="let form of data.forms">
-  <mat-card class="p-3" *ngFor="let group of form.groups">
-    <form>
-      <div
-        fxLayout="row"
-        fxLayout.xs="column"
-        fxLayoutAlign="space-between"
-        fxFlexFill
-        fxLayoutGap="10px"
-      >
-        <mat-form-field fxFlex="50" fxFlex.xs="100">
-          <input
-            formControlName="descriptionEN"
-            matInput
-            placeholder="Description (english)"
-          />
-        </mat-form-field>
+<div *ngFor="let form of data.forms" cdkDropList (cdkDropListDropped)="dropGroup(form, $event)">
+  <div *ngIf="!form.groups || form.groups.length ===0; else groups" fxLayout="column" fxLayoutAlign="center"
+    class="text-center opacity-25">
+    <img src="https://image.flaticon.com/icons/svg/126/126089.svg" style="height: 60px">
+    <p class="text-gray-900">Don't have a group</p>
+  </div>
 
-        <mat-form-field fxFlex="50" fxFlex.xs="100">
-          <input
-            formControlName="descriptionPT"
-            matInput
-            placeholder="Description (portuguese)"
-          />
-        </mat-form-field>
+  <ng-template #groups>
+    <mat-card class="p-3 mt-3" *ngFor="let group of form.groups" cdkDrag>
+      <div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
+          <div fxFlex="2" fxLayout="row" fxLayoutAlign="center center" class="cursor-pointer">
+            <mat-icon>dehaze</mat-icon>
+          </div>
+          <mat-form-field fxFlex="53">
+            <input name="descriptionEN" [(ngModel)]="group.descriptionEN" matInput
+              placeholder="Description (english)" />
+          </mat-form-field>
+
+          <mat-form-field fxFlex="53">
+            <input name="descriptionPT" [(ngModel)]="group.descriptionPT" matInput
+              placeholder="Description (portuguese)" />
+          </mat-form-field>
+        </div>
       </div>
-    </form>
-  </mat-card>
-</mat-card>
 
-<button mat-raised-button color="primary" class="mt-3">Enter</button>
+      <div cdkDropList (cdkDropListDropped)="dropField(group, $event)" class="pl-12">
+        <div *ngFor="let field of group.fields" cdkDrag>
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
+            <div fxFlex="2" fxLayout="row" fxLayoutAlign="center center" class="cursor-pointer">
+              <mat-icon>dehaze</mat-icon>
+            </div>
+
+            <mat-form-field fxFlex="32">
+              <input name="descriptionEN" [(ngModel)]="field.descriptionEN" matInput placeholder="Label (english)" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="32">
+              <input name="descriptionPT" [(ngModel)]="field.descriptionPT" matInput placeholder="Label (portuguese)" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="32">
+              <mat-label>Type</mat-label>
+              <mat-select name="type" [(ngModel)]="field.type">
+                <mat-option value="1">Text</mat-option>
+                <mat-option value="2">Number</mat-option>
+                <mat-option value="3">Option</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div cdkDropList (cdkDropListDropped)="dropOptions(field, $event)" class="pl-12">
+            <div *ngFor="let option of field.options" cdkDrag>
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
+                <div fxFlex="2" fxLayout="row" fxLayoutAlign="center center" class="cursor-pointer">
+                  <mat-icon>dehaze</mat-icon>
+                </div>
+
+                <mat-form-field fxFlex="53">
+                  <input name="descriptionEN" [(ngModel)]="option.descriptionEN" matInput
+                    placeholder="Label (english)" />
+                </mat-form-field>
+
+                <mat-form-field fxFlex="53">
+                  <input name="descriptionPT" [(ngModel)]="option.descriptionPT" matInput
+                    placeholder="Label (portuguese)" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="end">
+            <button *ngIf="field.type == 3" mat-flat-button color="accent" (click)="addOption(field)">Add
+              option</button>
+          </div>
+        </div>
+      </div>
+
+      <mat-card-actions>
+        <div fxLayout="row" fxLayoutAlign="end">
+          <button mat-button color="primary" (click)="addField(group)">Add field</button>
+          <button mat-button color="warn" (click)="removeField(group)">Remove</button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </ng-template>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="end" class="my-3">
+  <button mat-flat-button color="accent" small (click)="addGroup()">Add Group</button>
+</div>
+
+
+<div fxLayout="row" fxLayoutAlign="end" class="my-3">
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</div>

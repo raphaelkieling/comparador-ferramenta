@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule, MatSidenavModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule } from '@angular/material'
+import { MatToolbarModule, MatSidenavModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSelectModule, MatOptionModule, MatIconModule, MatPaginatorModule } from '@angular/material'
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 
@@ -14,7 +15,12 @@ import { MatToolbarModule, MatSidenavModule, MatCardModule, MatFormFieldModule, 
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule,
+    MatOptionModule,
+    DragDropModule,
+    MatIconModule,
+    MatPaginatorModule
   ],
   exports: [
     MatToolbarModule,
@@ -23,7 +29,12 @@ import { MatToolbarModule, MatSidenavModule, MatCardModule, MatFormFieldModule, 
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule,
+    MatOptionModule,
+    DragDropModule,
+    MatIconModule,
+    MatPaginatorModule
   ]
 })
 export class MaterialModule { }

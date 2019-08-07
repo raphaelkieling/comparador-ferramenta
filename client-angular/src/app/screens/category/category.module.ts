@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { FlexModule } from '@angular/flex-layout';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [CategoryComponent, CategorySaveComponent, CategoryListComponent],
   imports: [
@@ -17,6 +18,7 @@ import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
     MaterialModule,
     FlexModule,
     NgxDropzoneModule,
+    FormsModule,
     KeyboardShortcutsModule
   ],
   providers: [
