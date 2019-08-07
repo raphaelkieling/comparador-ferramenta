@@ -1,4 +1,8 @@
-<mat-card>
+<div fxLayout="row" fxLayoutAlign="end">
+  <button mat-raised-button color="primary" (click)="create()">Create</button>
+</div>
+
+<mat-card class="mt-3">
   <table mat-table [dataSource]="dataSource" class="w-full">
     <!-- Position Column -->
     <ng-container matColumnDef="id">

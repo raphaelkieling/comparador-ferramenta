@@ -28,7 +28,10 @@ export class CategoryListComponent implements OnInit {
   }
 
   edit(category: Category) {
-    this.router.navigate('')
+  }
+
+  create() {
+    this.router.navigate(['save'])
   }
 
 }

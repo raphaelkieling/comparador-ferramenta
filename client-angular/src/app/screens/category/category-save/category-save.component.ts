@@ -47,10 +47,17 @@ export class CategorySaveComponent implements AfterViewInit {
     field.options.push(option);
   }
 
-  removeField(group: Group): void {
-    if (!this.data.forms[0]) return;
+  removeField(group: Group, field: Field): void {
+    group.fields = group.fields.filter(item => item !== field);
+  }
 
+  removeGroup(group: Group): void {
+    if (!this.data.forms[0]) return;
     this.data.forms[0].groups = this.data.forms[0].groups.filter(item => group !== item);
+  }
+
+  removeOption(field: Field, option: FieldOption) {
+    field.options = field.options.filter(item => item !== option);
   }
 
   dropGroup(form: Form, event: CdkDragDrop<string[]>) {
