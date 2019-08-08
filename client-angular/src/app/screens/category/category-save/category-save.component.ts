@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ViewChildren } from '@angular/core';
 import { Category } from 'src/app/shared/domain/Category';
 import { Form } from 'src/app/shared/domain/Form';
 import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
@@ -7,21 +7,43 @@ import { Field } from 'src/app/shared/domain/Field';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FieldOption } from 'src/app/shared/domain/FieldOption';
 import { CategoryService } from '../category.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgxDropzoneComponent } from 'ngx-dropzone';
+import { toBase64 } from 'src/app/utils';
+import { Image } from 'src/app/shared/domain/Image';
+import { MatSnackBar } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-category-save',
   templateUrl: './category-save.component.html',
   styleUrls: ['./category-save.component.scss']
 })
-export class CategorySaveComponent implements AfterViewInit {
+export class CategorySaveComponent implements AfterViewInit, OnInit {
+  @ViewChild(NgxDropzoneComponent, { static: true }) dropzone: NgxDropzoneComponent; false
+
   data: Category = new Category();
   shortcuts: ShortcutInput[] = [];
+  file: File;
 
   constructor(
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private router: Router,
+    private active: ActivatedRoute,
+    private snack: MatSnackBar,
+    private sanitizer: DomSanitizer
   ) {
     this.data.forms = [new Form()];
-    console.log(this.data)
+  }
+
+  ngOnInit() {
+    const id = this.active.snapshot.queryParamMap.get('id');
+
+    if (!id) return;
+
+    this.categoryService.findOne(id).subscribe(({ data }) => {
+      this.data = data;
+    })
   }
 
   ngAfterViewInit(): void {
@@ -45,6 +67,14 @@ export class CategorySaveComponent implements AfterViewInit {
   addOption(field: Field): void {
     const option: FieldOption = new FieldOption();
     field.options.push(option);
+  }
+
+  onFilesAdded(files: File[]) {
+    this.file = files[0];
+  }
+
+  resetDropzone() {
+    this.dropzone.reset();
   }
 
   removeField(group: Group, field: Field): void {
@@ -72,7 +102,26 @@ export class CategorySaveComponent implements AfterViewInit {
     moveItemInArray(field.options, event.previousIndex, event.currentIndex)
   }
 
-  save() {
-    this.categoryService.save(this.data).subscribe(console.log)
+  async save() {
+    if (!(this.file && this.data.image)) {
+      this.snack.open('Need a image to continue', 'Ok');
+      return;
+    }
+
+    this.data.image = new Image();
+    this.data.image.base64 = await toBase64(this.file);
+
+    if (this.data.id) {
+      this.categoryService.update(this.data.id, this.data).subscribe(console.log)
+      return;
+    }
+
+    this.categoryService.save(this.data).subscribe(() => {
+      this.back();
+    });
+  }
+
+  back() {
+    this.router.navigate(['/admin', 'category'])
   }
 }

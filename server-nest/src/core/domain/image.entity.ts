@@ -4,7 +4,7 @@ import { IsBase64 } from 'class-validator';
 
 @Entity()
 export class Image extends BaseDomain {
-    @Column({ type: 'text' })
+    @Column({ type: 'blob' })
     @IsBase64()
     base64: string;
 }

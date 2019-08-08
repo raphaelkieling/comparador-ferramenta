@@ -28,10 +28,11 @@ export class CategoryListComponent implements OnInit {
   }
 
   edit(category: Category) {
+    this.router.navigate(['/admin', 'category', 'save'], { queryParams: { id: category.id } });
   }
 
   create() {
-    this.router.navigate(['save'])
+    this.router.navigate(['/admin', 'category', 'save'])
   }
 
 }

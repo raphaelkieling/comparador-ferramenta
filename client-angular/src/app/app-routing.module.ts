@@ -31,15 +31,15 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '**',
-    pathMatch: 'full',
-    redirectTo: 'login'
-  }
+  // {
+  //   path: '**',
+  //   pathMatch: 'full',
+  //   redirectTo: 'login'
+  // }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
