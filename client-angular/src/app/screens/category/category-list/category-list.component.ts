@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoryService } from '../category.service';
 import { Category } from 'src/app/shared/domain/Category';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +16,8 @@ export class CategoryListComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private snack: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -24,6 +25,8 @@ export class CategoryListComponent implements OnInit {
 
     this.categoryService.findAll<Category[]>().subscribe(({ data }: any) => {
       this.dataSource.data = data;
+    }, err => {
+      this.snack.open('Problem on get list', 'Ok')
     })
   }
 

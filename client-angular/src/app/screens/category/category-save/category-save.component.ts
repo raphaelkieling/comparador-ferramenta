@@ -103,7 +103,7 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
   }
 
   async save() {
-    if (!(this.file && this.data.image)) {
+    if (!this.file && !this.data.image) {
       this.snack.open('Need a image to continue', 'Ok');
       return;
     }

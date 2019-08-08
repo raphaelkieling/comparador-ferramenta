@@ -56,65 +56,74 @@
         </div>
       </div>
 
-      <div cdkDropList (cdkDropListDropped)="dropField(group, $event)" class="ml-12">
-        <div *ngFor="let field of group.fields" cdkDrag>
-          <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
-            <div fxFlex="5" fxLayout="row" fxLayoutAlign="center center" class="cursor-pointer">
-              <mat-icon>dehaze</mat-icon>
+      <div *ngIf="!group.fields || group.fields.length ===0; else fields" fxLayout="column" fxLayoutAlign="center"
+        class="text-center opacity-25">
+        <img src="https://image.flaticon.com/icons/svg/32/32003.svg" style="height: 60px">
+        <p class="text-gray-900">Don't have a fields</p>
+      </div>
+
+      <ng-template #fields>
+        <div cdkDropList (cdkDropListDropped)="dropField(group, $event)" class="ml-12">
+          <div *ngFor="let field of group.fields" cdkDrag>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
+              <div fxFlex="5" fxLayout="row" fxLayoutAlign="center center" class="cursor-pointer">
+                <mat-icon>dehaze</mat-icon>
+              </div>
+
+              <mat-form-field fxFlex="30">
+                <input name="descriptionEN" [(ngModel)]="field.descriptionEN" matInput placeholder="Label (english)" />
+              </mat-form-field>
+
+              <mat-form-field fxFlex="30">
+                <input name="descriptionPT" [(ngModel)]="field.descriptionPT" matInput
+                  placeholder="Label (portuguese)" />
+              </mat-form-field>
+
+              <mat-form-field fxFlex="30">
+                <mat-label>Type</mat-label>
+                <mat-select name="type" [(ngModel)]="field.type">
+                  <mat-option value="1">Text</mat-option>
+                  <mat-option value="2">Number</mat-option>
+                  <mat-option value="3">Option</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="5">
+                <mat-icon (click)="removeField(group, field)" class="cursor-pointer">delete</mat-icon>
+              </div>
             </div>
 
-            <mat-form-field fxFlex="30">
-              <input name="descriptionEN" [(ngModel)]="field.descriptionEN" matInput placeholder="Label (english)" />
-            </mat-form-field>
+            <div cdkDropList (cdkDropListDropped)="dropOptions(field, $event)" class="pl-12">
+              <div *ngFor="let option of field.options" cdkDrag>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
+                  <div fxFlex="5" fxLayout="row" fxLayoutAlign="center center" class="cursor-pointer">
+                    <mat-icon>dehaze</mat-icon>
+                  </div>
 
-            <mat-form-field fxFlex="30">
-              <input name="descriptionPT" [(ngModel)]="field.descriptionPT" matInput placeholder="Label (portuguese)" />
-            </mat-form-field>
+                  <mat-form-field fxFlex="45">
+                    <input name="descriptionEN" [(ngModel)]="option.descriptionEN" matInput
+                      placeholder="Label (english)" />
+                  </mat-form-field>
 
-            <mat-form-field fxFlex="30">
-              <mat-label>Type</mat-label>
-              <mat-select name="type" [(ngModel)]="field.type">
-                <mat-option value="1">Text</mat-option>
-                <mat-option value="2">Number</mat-option>
-                <mat-option value="3">Option</mat-option>
-              </mat-select>
-            </mat-form-field>
+                  <mat-form-field fxFlex="45">
+                    <input name="descriptionPT" [(ngModel)]="option.descriptionPT" matInput
+                      placeholder="Label (portuguese)" />
+                  </mat-form-field>
 
-            <div fxLayout="row" fxLayoutAlign="center center" fxFlex="5">
-              <mat-icon (click)="removeField(group, field)" class="cursor-pointer">delete</mat-icon>
-            </div>
-          </div>
-
-          <div cdkDropList (cdkDropListDropped)="dropOptions(field, $event)" class="pl-12">
-            <div *ngFor="let option of field.options" cdkDrag>
-              <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
-                <div fxFlex="5" fxLayout="row" fxLayoutAlign="center center" class="cursor-pointer">
-                  <mat-icon>dehaze</mat-icon>
-                </div>
-
-                <mat-form-field fxFlex="45">
-                  <input name="descriptionEN" [(ngModel)]="option.descriptionEN" matInput
-                    placeholder="Label (english)" />
-                </mat-form-field>
-
-                <mat-form-field fxFlex="45">
-                  <input name="descriptionPT" [(ngModel)]="option.descriptionPT" matInput
-                    placeholder="Label (portuguese)" />
-                </mat-form-field>
-
-                <div fxLayout="row" fxLayoutAlign="center center" fxFlex="5">
-                  <mat-icon (click)="removeOption(field, option)" class="cursor-pointer">delete</mat-icon>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxFlex="5">
+                    <mat-icon (click)="removeOption(field, option)" class="cursor-pointer">delete</mat-icon>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div fxLayout="row" fxLayoutAlign="end">
-            <button *ngIf="field.type == 3" mat-flat-button color="accent" (click)="addOption(field)">Add
-              option</button>
+            <div fxLayout="row" fxLayoutAlign="end">
+              <button *ngIf="field.type == 3" mat-flat-button color="accent" (click)="addOption(field)">Add
+                option</button>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-template>
 
       <mat-card-actions>
         <div fxLayout="row" fxLayoutAlign="end">
