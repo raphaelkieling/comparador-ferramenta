@@ -42,6 +42,7 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
     if (!id) return;
 
     this.categoryService.findOne(id).subscribe(({ data }) => {
+      data.image.url = `http://localhost:3001/${data.image.url}`
       this.data = data;
     })
   }
@@ -103,22 +104,21 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
   }
 
   async save() {
-    if (!this.file && !this.data.image) {
-      this.snack.open('Need a image to continue', 'Ok');
-      return;
-    }
-
-    this.data.image = new Image();
-    this.data.image.base64 = await toBase64(this.file);
-
     if (this.data.id) {
       this.categoryService.update(this.data.id, this.data).subscribe(console.log)
       return;
     }
 
-    this.categoryService.save(this.data).subscribe(() => {
-      this.back();
-    });
+    const { data: category } = await this.categoryService.save(this.data).toPromise();
+
+    let file = new FormData();
+    file.append('file', this.file);
+
+    const { data: image } = await this.categoryService.upload(category.id, file).toPromise();
+
+    this.snack.open('Save on save!', '', { duration: 2000 })
+
+    this.back();
   }
 
   back() {

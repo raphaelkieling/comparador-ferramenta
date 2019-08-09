@@ -14,8 +14,11 @@
 
     <div>
       <div *ngIf="data.image" fxLayout="row" fxLayoutAlign="center">
-        <img [src]="data.image.base64">
+        <img [src]="data.image.url">
       </div>
+
+      <hr>
+
       <ngx-dropzone [showPreviews]="true" (filesAdded)="onFilesAdded($event)" [multiple]="false"
         [label]="'Click to search a image'" [accept]="'image/png,image/jpeg'"></ngx-dropzone>
 

@@ -3,13 +3,14 @@ import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
 import { CategoryRepository } from './category.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ImageRepository } from '../image/image.repository';
+import { MidiaRepository } from '../midia/midia.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     CategoryRepository,
-    ImageRepository,
-  ])],
+    MidiaRepository,
+  ])
+],
   controllers: [CategoryController],
   providers: [CategoryService],
 })

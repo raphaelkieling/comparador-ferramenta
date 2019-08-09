@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { CategoryRepository } from './category.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/core/domain/category.entity';
-import { Image } from 'src/core/domain/image.entity';
 import CategoryCreateDTO from 'src/core/dto/category.dto';
+import { Midia } from 'src/core/domain/midia.entity';
+import { MidiaRepository } from '../midia/midia.repository';
 
 @Injectable()
 export class CategoryService {
     constructor(
         @InjectRepository(Category)
         private readonly categoryRepository: CategoryRepository,
+        @InjectRepository(Midia)
+        private readonly midiaRepository: MidiaRepository
     ) { }
 
     findAll(): Promise<Category[]> {
@@ -17,15 +20,19 @@ export class CategoryService {
     }
 
     findOne(id: number): Promise<Category> {
-        return new Promise(async resolve => {
-            let category: Category = await this.categoryRepository.getOne(id);
+        return this.categoryRepository.getOne(id);
+    }
 
-            if (category.image) {
-                category.image.base64 = Buffer.from(category.image.base64).toString('base64')
+    async setImage(id: number, filePath: string): Promise<Category> {
+        const category: Category = await this.findOne(id);
 
-            }
-            return resolve(category);
-        })
+        const midiaCategory = new Midia();
+        midiaCategory.url = filePath;
+        const midia: Midia = await this.midiaRepository.save(midiaCategory);
+
+        category.image = midia;
+        await this.categoryRepository.save(category);
+        return this.categoryRepository.getOne(id);
     }
 
     async create(data: CategoryCreateDTO): Promise<Category> {
@@ -33,7 +40,8 @@ export class CategoryService {
     }
 
     async update(id: number, data: Category): Promise<boolean> {
-        const result = await this.categoryRepository.update(id, data);
+        data.id = id;
+        const result = await this.categoryRepository.update(id , data);
         return result !== undefined;
     }
 

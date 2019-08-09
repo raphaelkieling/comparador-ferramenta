@@ -10,6 +10,8 @@ import { FlexModule } from '@angular/flex-layout';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { FormsModule } from '@angular/forms';
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 @NgModule({
   declarations: [CategoryComponent, CategorySaveComponent, CategoryListComponent],
   imports: [
@@ -19,7 +21,8 @@ import { FormsModule } from '@angular/forms';
     FlexModule,
     NgxDropzoneModule,
     FormsModule,
-    KeyboardShortcutsModule
+    KeyboardShortcutsModule,
+    ImageCropperModule
   ],
   providers: [
     CategoryService

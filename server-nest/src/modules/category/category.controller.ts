@@ -7,10 +7,15 @@ import {
     Delete,
     Param,
     Body,
+    UseInterceptors,
+    UploadedFile,
 } from '@nestjs/common';
 import CategoryCreateDTO from 'src/core/dto/category.dto';
 import CategoryDTO from 'src/core/dto/category.dto';
 import { BaseController } from '../base.controller';
+import { FileInterceptor } from '@nestjs/platform-express'
+import { Category } from 'src/core/domain/category.entity';
+import { Midia } from 'src/core/domain/midia.entity';
 
 @Controller('category')
 export class CategoryController extends BaseController {
@@ -26,6 +31,12 @@ export class CategoryController extends BaseController {
     @Get(':id')
     public findOne(@Param('id') id: number): Promise<CategoryDTO> {
         return this.service.findOne(id);
+    }
+
+    @Post(':id/upload')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadFile(@Param('id') id: number, @UploadedFile() file) {
+        return this.service.setImage(id, file.path);
     }
 
     @Post()
