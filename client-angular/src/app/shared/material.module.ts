@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule, MatSidenavModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSelectModule, MatOptionModule, MatIconModule, MatPaginatorModule, MatSnackBarModule } from '@angular/material'
+import { MatToolbarModule, MatSidenavModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSelectModule, MatOptionModule, MatIconModule, MatPaginatorModule, MatSnackBarModule, MatMenuModule } from '@angular/material'
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
@@ -21,7 +21,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     DragDropModule,
     MatIconModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatMenuModule
   ],
   exports: [
     MatToolbarModule,
@@ -36,7 +37,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     DragDropModule,
     MatIconModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatMenuModule
   ]
 })
 export class MaterialModule { }

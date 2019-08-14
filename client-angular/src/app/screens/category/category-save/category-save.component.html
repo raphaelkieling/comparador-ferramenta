@@ -1,20 +1,20 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
 <mat-card>
-  <div fxLayout="column">
+  <form fxLayout="column">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
       <mat-form-field fxFlex="50" fxFlex.xs="100">
-        <input matInput [(ngModel)]="data.descriptionEN" placeholder="Title (english)" />
+        <input [(ngModel)]="data.descriptionEN" name="descriptionEN" matInput placeholder="Title (english)" />
       </mat-form-field>
 
       <mat-form-field fxFlex="50" fxFlex.xs="100">
-        <input matInput [(ngModel)]="data.descriptionPT" placeholder="Title (portuguese)" />
+        <input [(ngModel)]="data.descriptionPT" name="descriptionPT" matInput placeholder="Title (portuguese)" />
       </mat-form-field>
     </div>
 
     <div>
       <div *ngIf="data.image" fxLayout="row" fxLayoutAlign="center">
-        <img [src]="data.image.url">
+        <img [src]="data.image.url" class="category-image-thumb">
       </div>
 
       <hr>
@@ -26,7 +26,7 @@
         <button mat-flat-button color="accent" small (click)="resetDropzone()">Clear</button>
       </div>
     </div>
-  </div>
+  </form>
 </mat-card>
 
 <div class="my-3">
@@ -36,7 +36,7 @@
 <div *ngFor="let form of data.forms" cdkDropList (cdkDropListDropped)="dropGroup(form, $event)">
   <div *ngIf="!form.groups || form.groups.length ===0; else groups" fxLayout="column" fxLayoutAlign="center"
     class="text-center opacity-25">
-    <img src="https://image.flaticon.com/icons/svg/126/126089.svg" style="height: 60px">
+    <img src="assets/images/category-group-empty.svg" style="height: 60px">
     <p class="text-gray-900">Don't have a group</p>
   </div>
 
@@ -61,7 +61,7 @@
 
       <div *ngIf="!group.fields || group.fields.length ===0; else fields" fxLayout="column" fxLayoutAlign="center"
         class="text-center opacity-25">
-        <img src="https://image.flaticon.com/icons/svg/32/32003.svg" style="height: 60px">
+        <img src="assets/images/category-field-empty.svg" style="height: 60px">
         <p class="text-gray-900">Don't have a fields</p>
       </div>
 
@@ -85,9 +85,9 @@
               <mat-form-field fxFlex="30">
                 <mat-label>Type</mat-label>
                 <mat-select name="type" [(ngModel)]="field.type">
-                  <mat-option value="1">Text</mat-option>
-                  <mat-option value="2">Number</mat-option>
-                  <mat-option value="3">Option</mat-option>
+                  <mat-option [value]="1">Text</mat-option>
+                  <mat-option [value]="2">Number</mat-option>
+                  <mat-option [value]="3">Option</mat-option>
                 </mat-select>
               </mat-form-field>
 

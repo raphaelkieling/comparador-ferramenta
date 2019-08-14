@@ -23,10 +23,10 @@ export class CategoryListComponent implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
 
-    this.categoryService.findAll<Category[]>().subscribe(({ data }: any) => {
+    this.categoryService.findAll().subscribe((data: any) => {
       this.dataSource.data = data;
     }, err => {
-      this.snack.open('Problem on get list', 'Ok')
+      this.snack.open('Problem on get list', 'Ok', { duration: 2000 })
     })
   }
 

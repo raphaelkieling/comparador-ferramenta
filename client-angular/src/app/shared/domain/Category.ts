@@ -1,10 +1,10 @@
 import { Form } from "./Form";
-import { Image } from "./Image";
+import { Midia } from "./Midia";
 
 export class Category {
   id: number;
   descriptionEN: string;
   descriptionPT: string;
   forms: Form[];
-  image: Image;
+  image: Midia;
 }

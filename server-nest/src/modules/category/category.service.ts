@@ -12,7 +12,7 @@ export class CategoryService {
         @InjectRepository(Category)
         private readonly categoryRepository: CategoryRepository,
         @InjectRepository(Midia)
-        private readonly midiaRepository: MidiaRepository
+        private readonly midiaRepository: MidiaRepository,
     ) { }
 
     findAll(): Promise<Category[]> {
@@ -40,8 +40,8 @@ export class CategoryService {
     }
 
     async update(id: number, data: Category): Promise<boolean> {
-        data.id = id;
-        const result = await this.categoryRepository.update(id , data);
+        data.id = Number(id);
+        const result = await this.categoryRepository.save(data);
         return result !== undefined;
     }
 

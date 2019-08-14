@@ -1,8 +1,15 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <span>Administration</span>
+
     <span style="flex: 1 1 auto;"></span>
+
     <button mat-button [routerLink]="['/admin','category']">Category</button>
+
+    <button mat-icon-button>
+      <mat-icon>logout</mat-icon>
+    </button>
+
   </mat-toolbar-row>
 </mat-toolbar>
 

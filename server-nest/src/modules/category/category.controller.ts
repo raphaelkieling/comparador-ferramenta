@@ -36,7 +36,7 @@ export class CategoryController extends BaseController {
     @Post(':id/upload')
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@Param('id') id: number, @UploadedFile() file) {
-        return this.service.setImage(id, file.path);
+        return this.service.setImage(id, file.filename);
     }
 
     @Post()

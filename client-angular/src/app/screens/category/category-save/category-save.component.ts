@@ -9,10 +9,9 @@ import { FieldOption } from 'src/app/shared/domain/FieldOption';
 import { CategoryService } from '../category.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxDropzoneComponent } from 'ngx-dropzone';
-import { toBase64 } from 'src/app/utils';
-import { Image } from 'src/app/shared/domain/Image';
 import { MatSnackBar } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-category-save',
@@ -25,13 +24,15 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
   data: Category = new Category();
   shortcuts: ShortcutInput[] = [];
   file: File;
+  form: FormGroup;
+  fileChanged = false;
 
   constructor(
     private categoryService: CategoryService,
     private router: Router,
     private active: ActivatedRoute,
     private snack: MatSnackBar,
-    private sanitizer: DomSanitizer
+    private fb: FormBuilder
   ) {
     this.data.forms = [new Form()];
   }
@@ -39,11 +40,13 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     const id = this.active.snapshot.queryParamMap.get('id');
 
-    if (!id) return;
+    if (!id) { return; }
 
-    this.categoryService.findOne(id).subscribe(({ data }) => {
-      data.image.url = `http://localhost:3001/${data.image.url}`
+    this.categoryService.findOne(id).subscribe((data: Category) => {
       this.data = data;
+    }, err => {
+      this.snack.open('Category not found');
+      this.back();
     })
   }
 
@@ -72,10 +75,12 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
 
   onFilesAdded(files: File[]) {
     this.file = files[0];
+    this.fileChanged = true;
   }
 
   resetDropzone() {
     this.dropzone.reset();
+    this.fileChanged = false;
   }
 
   removeField(group: Group, field: Field): void {
@@ -103,21 +108,53 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
     moveItemInArray(field.options, event.previousIndex, event.currentIndex)
   }
 
+  async beforeSave(): Promise<boolean> {
+    return true;
+  }
+
   async save() {
+    const canSave: boolean = await this.beforeSave();
+
+    if (false === canSave) { return; }
+
     if (this.data.id) {
-      this.categoryService.update(this.data.id, this.data).subscribe(console.log)
-      return;
+      try {
+        this.categoryService.update(this.data.id, this.data).toPromise();
+        const file = new FormData();
+        file.append('file', this.file);
+        try {
+          await this.categoryService.upload(this.data.id, file).toPromise();
+        } catch (err) {
+          this.snack.open('An error ocurred on upload the image!', '', { duration: 2000 });
+          return;
+        }
+      } catch (err) {
+        this.snack.open('An error ocurred on update the category!', '', { duration: 2000 });
+        return;
+      }
+    } else {
+      try {
+        const { data: categorySaved } = await this.categoryService.save(this.data).toPromise();
+        const file = new FormData();
+        file.append('file', this.file);
+
+        try {
+          await this.categoryService.upload(categorySaved.id, file).toPromise();
+        } catch (err) {
+          this.snack.open('An error ocurred on upload the image!', '', { duration: 2000 });
+          return;
+        }
+      } catch (err) {
+        this.snack.open('An error ocurred on save the category!', '', { duration: 2000 });
+        return;
+      }
+
     }
 
-    const { data: category } = await this.categoryService.save(this.data).toPromise();
 
-    let file = new FormData();
-    file.append('file', this.file);
 
-    const { data: image } = await this.categoryService.upload(category.id, file).toPromise();
 
     this.snack.open('Save on save!', '', { duration: 2000 })
-
     this.back();
   }
 

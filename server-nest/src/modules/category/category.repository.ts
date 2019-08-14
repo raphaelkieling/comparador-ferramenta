@@ -11,17 +11,8 @@ export class CategoryRepository extends Repository<Category> {
 
     getOne(id: number): Promise<Category> {
         return this.findOne({
-            where: {
-                id,
-            },
+            where: { id },
             relations: ['image', 'forms', 'forms.groups', 'forms.groups.fields'],
-        });
-        // return this.createQueryBuilder('c')
-        //     .innerJoinAndSelect('c.image', 'images')
-        //     .innerJoinAndSelect('c.forms', 'forms')
-        //     .innerJoinAndSelect('forms.groups', 'groups')
-        //     .innerJoinAndSelect('groups.fields', 'fields')
-        //     .where('c.id = :ci', { ci: id })
-        //     .getOne();
+        })
     }
 }

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IAuthResponse } from 'src/app/shared/domain/User';
 import { setToken } from 'src/app/utils/auth';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private fb: FormBuilder,
-    private route: Router
+    private route: Router,
+    private snack: MatSnackBar
   ) {
     this.buildForm();
   }
@@ -43,7 +45,9 @@ export class LoginComponent implements OnInit {
         setToken(response.access_token);
         this.route.navigate(['/admin', 'category']);
         this.loading = false;
-      })
+      }, err => {
+        this.snack.open('Error authenticating!', 'Ok', { duration: 1000 });
+      });
   }
 
 }

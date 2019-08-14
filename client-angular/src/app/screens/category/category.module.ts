@@ -9,7 +9,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { FlexModule } from '@angular/flex-layout';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
@@ -22,7 +22,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     NgxDropzoneModule,
     FormsModule,
     KeyboardShortcutsModule,
-    ImageCropperModule
+    ImageCropperModule,
+    ReactiveFormsModule
   ],
   providers: [
     CategoryService

@@ -2,19 +2,21 @@ import { Injectable } from '@angular/core';
 import { BaseService, IAppResponse } from 'src/app/shared/service/base.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Image } from 'src/app/shared/domain/Image';
+import { CategoryMapper } from '../../shared/mappers/categoryMapper';
+import { Category } from 'src/app/shared/domain/Category';
+import { Midia } from 'src/app/shared/domain/Midia';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService extends BaseService {
+export class CategoryService extends BaseService<Category> {
 
   constructor(httpClient: HttpClient) {
-    super(httpClient, 'category');
+    super(httpClient, 'category', new CategoryMapper());
   }
 
-  upload(id: number, file: FormData): Observable<IAppResponse<Image>> {
+  upload(id: number, file: FormData): Observable<IAppResponse<Midia>> {
     return this.httpClient
-      .post<IAppResponse<Image>>(`${this.baseUrlApi}/${this.name}/${id}/upload`, file)
+      .post<IAppResponse<Midia>>(`${this.baseUrlApi}/${this.name}/${id}/upload`, file)
   }
 }
