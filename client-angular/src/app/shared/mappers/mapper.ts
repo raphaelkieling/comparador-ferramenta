@@ -8,7 +8,6 @@ export class Mapper<T> {
   }
 
   fromSourceList(models: T[]) {
-    console.log(models)
     return models.map(this.fromSource);
   }
 

@@ -22,10 +22,14 @@ export class CategoryListComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    this.load();
+  }
 
+  load() {
     this.categoryService.findAll().subscribe((data: any) => {
       this.dataSource.data = data;
     }, err => {
+      console.log(err)
       this.snack.open('Problem on get list', 'Ok', { duration: 2000 })
     })
   }

@@ -2,8 +2,7 @@ import { Mapper } from './mapper';
 import { Midia } from '../domain/Midia';
 
 export class MidiaMapper extends Mapper<Midia> {
-  fromSource(model: any): any {
-    console.log(model)
+  fromSource(model: any): Midia {
     if (!model) return new Midia();
 
     const category = new Midia();
