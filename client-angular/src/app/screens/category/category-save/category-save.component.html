@@ -1,6 +1,21 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
 <mat-card>
+  <div>
+    <div *ngIf="data.image" fxLayout="row" fxLayoutAlign="center">
+      <img [src]="data.image.publicUrl" class="category-image-thumb">
+    </div>
+
+    <hr>
+
+    <ngx-dropzone [showPreviews]="true" (filesAdded)="onFilesAdded($event)" [multiple]="false"
+      [label]="'Click to search a image'" [accept]="'image/png,image/jpeg'"></ngx-dropzone>
+
+    <div fxLayout="row" fxLayoutAlign="end" class="mt-3">
+      <button mat-flat-button color="accent" small (click)="resetDropzone()">Clear</button>
+    </div>
+  </div>
+
   <form fxLayout="column">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlexFill fxLayoutGap="10px">
       <mat-form-field fxFlex="50" fxFlex.xs="100">
@@ -10,21 +25,6 @@
       <mat-form-field fxFlex="50" fxFlex.xs="100">
         <input [(ngModel)]="data.descriptionPT" name="descriptionPT" matInput placeholder="Title (portuguese)" />
       </mat-form-field>
-    </div>
-
-    <div>
-      <div *ngIf="data.image" fxLayout="row" fxLayoutAlign="center">
-        <img [src]="data.image.url" class="category-image-thumb">
-      </div>
-
-      <hr>
-
-      <ngx-dropzone [showPreviews]="true" (filesAdded)="onFilesAdded($event)" [multiple]="false"
-        [label]="'Click to search a image'" [accept]="'image/png,image/jpeg'"></ngx-dropzone>
-
-      <div fxLayout="row" fxLayoutAlign="end" class="mt-3">
-        <button mat-flat-button color="accent" small (click)="resetDropzone()">Clear</button>
-      </div>
     </div>
   </form>
 </mat-card>

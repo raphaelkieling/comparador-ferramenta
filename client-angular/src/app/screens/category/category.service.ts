@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseService, IAppResponse } from 'src/app/shared/service/base.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CategoryMapper } from '../../shared/mappers/categoryMapper';
+import { CategoryMapper } from 'src/app/shared/mappers/categoryMapper';
 import { Category } from 'src/app/shared/domain/Category';
 import { Midia } from 'src/app/shared/domain/Midia';
 

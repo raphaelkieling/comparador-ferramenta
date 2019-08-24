@@ -5,13 +5,16 @@ import { MidiaMapper } from './midiaMapper';
 export class CategoryMapper extends Mapper<Category> {
   private midiaMapper = new MidiaMapper();
 
+  constructor() {
+    super();
+  }
+
   fromSource(model: any): any {
     const category = new Category();
     category.id = model.id;
     category.descriptionEN = model.descriptionEN;
     category.descriptionPT = model.descriptionPT;
     category.forms = model.forms;
-    console.log(model)
     category.image = this.midiaMapper.fromSource(model.image);
     return category;
   }

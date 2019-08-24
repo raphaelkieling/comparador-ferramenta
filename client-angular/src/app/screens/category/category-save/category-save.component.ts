@@ -26,6 +26,7 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
   file: File;
   form: FormGroup;
   fileChanged = false;
+  loading: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
@@ -42,11 +43,14 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
 
     if (!id) { return; }
 
+    this.loading = true;
     this.categoryService.findOne(id).subscribe((data: Category) => {
       this.data = data;
     }, err => {
       this.snack.open('Category not found');
       this.back();
+    }, () => {
+      this.loading = false;
     })
   }
 
@@ -112,49 +116,32 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
     return true;
   }
 
+  async uploadFile(id: number) {
+    const file = new FormData();
+    file.append('file', this.file);
+    await this.categoryService.upload(id, file).toPromise();
+  }
+
   async save() {
     const canSave: boolean = await this.beforeSave();
 
     if (false === canSave) { return; }
 
     if (this.data.id) {
-      try {
-        this.categoryService.update(this.data.id, this.data).toPromise();
-        const file = new FormData();
-        file.append('file', this.file);
-        try {
-          await this.categoryService.upload(this.data.id, file).toPromise();
-        } catch (err) {
-          this.snack.open('An error ocurred on upload the image!', '', { duration: 2000 });
-          return;
-        }
-      } catch (err) {
-        this.snack.open('An error ocurred on update the category!', '', { duration: 2000 });
-        return;
+      await this.categoryService.update(this.data.id, this.data).toPromise();
+      if (this.fileChanged) {
+        await this.uploadFile(this.data.id);
       }
     } else {
-      try {
-        const { data: categorySaved } = await this.categoryService.save(this.data).toPromise();
-        const file = new FormData();
-        file.append('file', this.file);
-
-        try {
-          await this.categoryService.upload(categorySaved.id, file).toPromise();
-        } catch (err) {
-          this.snack.open('An error ocurred on upload the image!', '', { duration: 2000 });
-          return;
-        }
-      } catch (err) {
-        this.snack.open('An error ocurred on save the category!', '', { duration: 2000 });
-        return;
+      let { data: categorySaved } = await this.categoryService.save(this.data).toPromise();
+      if (this.fileChanged) {
+        await this.uploadFile(categorySaved.id);
       }
-
     }
 
 
 
-
-    this.snack.open('Save on save!', '', { duration: 2000 })
+    this.snack.open('Success on save!', 'ok', { duration: 2000 })
     this.back();
   }
 
