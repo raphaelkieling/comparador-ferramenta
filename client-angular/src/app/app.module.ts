@@ -27,4 +27,4 @@ import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -4,6 +4,8 @@ import { AdminComponent } from './admin.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { RouterModule } from '@angular/router';
 import { CategoryModule } from '../category/category.module';
+import { ProfileModule } from '../profile/profile.module';
+import { BrandModule } from '../brand/brand.module';
 
 
 
@@ -13,7 +15,9 @@ import { CategoryModule } from '../category/category.module';
     CommonModule,
     MaterialModule,
     RouterModule,
-    CategoryModule
+    CategoryModule,
+    ProfileModule,
+    BrandModule
   ]
 })
 export class AdminModule { }

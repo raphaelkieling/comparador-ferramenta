@@ -1,8 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule, MatSidenavModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSelectModule, MatOptionModule, MatIconModule, MatPaginatorModule, MatSnackBarModule, MatMenuModule } from '@angular/material'
+import {
+  MatToolbarModule,
+  MatSidenavModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  MatTableModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatIconModule,
+  MatPaginatorModule,
+  MatSnackBarModule,
+  MatMenuModule,
+  MatListModule,
+  MatDividerModule
+} from '@angular/material'
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -24,7 +40,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatPaginatorModule,
     MatSnackBarModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatDividerModule
   ],
   exports: [
     MatToolbarModule,
@@ -41,7 +59,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatPaginatorModule,
     MatSnackBarModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatDividerModule
   ]
 })
 export class MaterialModule { }

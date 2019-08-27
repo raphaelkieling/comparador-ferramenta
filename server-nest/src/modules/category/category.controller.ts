@@ -14,8 +14,6 @@ import CategoryCreateDTO from 'src/core/dto/category.dto';
 import CategoryDTO from 'src/core/dto/category.dto';
 import { BaseController } from '../base.controller';
 import { FileInterceptor } from '@nestjs/platform-express'
-import { Category } from 'src/core/domain/category.entity';
-import { Midia } from 'src/core/domain/midia.entity';
 
 @Controller('category')
 export class CategoryController extends BaseController {

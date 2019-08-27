@@ -10,8 +10,7 @@ import { CategoryService } from '../category.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxDropzoneComponent } from 'ngx-dropzone';
 import { MatSnackBar } from '@angular/material';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { environment } from 'src/environments/environment';
+import { Constants } from 'src/app/constants';
 
 @Component({
   selector: 'app-category-save',
@@ -24,16 +23,14 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
   data: Category = new Category();
   shortcuts: ShortcutInput[] = [];
   file: File;
-  form: FormGroup;
   fileChanged = false;
-  loading: boolean = false;
+  loading = false;
 
   constructor(
     private categoryService: CategoryService,
     private router: Router,
     private active: ActivatedRoute,
-    private snack: MatSnackBar,
-    private fb: FormBuilder
+    private snack: MatSnackBar
   ) {
     this.data.forms = [new Form()];
   }
@@ -47,7 +44,7 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
     this.categoryService.findOne(id).subscribe((data: Category) => {
       this.data = data;
     }, err => {
-      this.snack.open('Category not found');
+      this.snack.open('Category not found', '', { duration: Constants.SNACKBAR_TIME });
       this.back();
     }, () => {
       this.loading = false;
@@ -92,7 +89,7 @@ export class CategorySaveComponent implements AfterViewInit, OnInit {
   }
 
   removeGroup(group: Group): void {
-    if (!this.data.forms[0]) return;
+    if (!this.data.forms[0]) { return; }
     this.data.forms[0].groups = this.data.forms[0].groups.filter(item => group !== item);
   }
 
