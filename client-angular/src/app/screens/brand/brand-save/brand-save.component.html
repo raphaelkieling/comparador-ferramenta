@@ -1,14 +1,19 @@
-<mat-card>
-  <form fxLayout="column">
+<form fxLayout="column" [formGroup]="form" (ngSubmit)="save()">
+  <mat-card>
     <div fxLayout="row">
       <mat-form-field fxFlex="100">
-        <input [(ngModel)]="data.description" name="description" matInput placeholder="Description" />
+        <input #description formControlName="description" name="description" matInput placeholder="Description"
+          maxlength="50" />
+        <mat-error *ngIf="form.get('description').hasError('required')">Este campo é obrigatório</mat-error>
+        <mat-error *ngIf="form.get('description').hasError('maxlength')">Este campo deve ter no máximo 50 caractéres
+        </mat-error>
+        <mat-hint align="end">{{description.value?.length || 0}}/50</mat-hint>
       </mat-form-field>
     </div>
-  </form>
-</mat-card>
+  </mat-card>
 
-<div fxLayout="row" fxLayoutAlign="end" class="my-3">
-  <button mat-button color="primary" (click)="back()">Cancel</button>
-  <button mat-raised-button color="primary" class="ml-3" (click)="save()">Save</button>
-</div>
+  <div fxLayout="row" fxLayoutAlign="end" class="my-3">
+    <button mat-button color="primary" (click)="back()">Cancel</button>
+    <button mat-raised-button color="primary" class="ml-3" type="submit">Save</button>
+  </div>
+</form>
